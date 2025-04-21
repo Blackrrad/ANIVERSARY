@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เว็บบอกรักสุดพิเศษ</title>
+    <style>
+        body {
+            font-family: 'Prompt', sans-serif;
+            background-color: #ffe6f2;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        h1 {
+            color: #ff66b2;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .heart {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            animation: pulse 1.5s infinite;
+        }
+        
+        .heart::before, .heart::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            width: 100px;
+            height: 160px;
+            border-radius: 100px 100px 0 0;
+            background-color: #ff3377;
+        }
+        
+        .heart::before {
+            left: 100px;
+            transform: rotate(-45deg);
+            transform-origin: 0 100%;
+        }
+        
+        .heart::after {
+            left: 0;
+            transform: rotate(45deg);
+            transform-origin: 100% 100%;
+        }
+        
+        .message {
+            background-color: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .message p {
+            font-size: 1.2rem;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .photos {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .photo {
+            width: 300px;
+            height: 300px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .button {
+            background-color: #ff3377;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            margin: 10px;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+        
+        .button:hover {
+            transform: scale(1.05);
+            background-color: #ff1a66;
+        }
+        
+        .floating-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .floating-heart {
+            position: absolute;
+            color: #ff80bf;
+            font-size: 1.5rem;
+            animation: float 10s linear infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) translateX(100px);
+                opacity: 0;
+            }
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .special-message {
+            font-size: 1.5rem;
+            color: #ff3377;
+            margin-top: 20px;
+        }
+        
+        .music-player {
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            padding: 15px;
+            margin: 20px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            max-width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .music-player h3 {
+            margin-top: 0;
+            color: #ff3377;
+        }
+        
+        .music-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .music-controls button {
+            background-color: #ff66b2;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .music-controls button:hover {
+            background-color: #ff3377;
+        }
+        
+        .volume-control {
+            margin-top: 10px;
+            width: 100%;
+        }
+        
+        /* เพิ่มสไตล์สำหรับหน้า Login */
+        .login-container {
+            background-color: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            width: 90%;
+            max-width: 400px;
+            margin: 50px auto;
+            text-align: center;
+        }
+        
+        .login-container h2 {
+            color: #ff3377;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            box-sizing: border-box;
+        }
+        
+        .form-group input:focus {
+            border-color: #ff66b2;
+            outline: none;
+        }
+        
+        .login-button {
+            background-color: #ff3377;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+        
+        .login-button:hover {
+            background-color: #ff1a66;
+        }
+        
+        .login-message {
+            color: #ff3377;
+            margin-top: 15px;
+            font-weight: 500;
+        }
+        
+        .login-heart {
+            font-size: 60px;
+            color: #ff66b2;
+            margin: 0 0 20px;
+            animation: pulse 1.5s infinite;
+            display: inline-block;
+        }
+        
+        .hint {
+            margin-top: 20px;
+            color: #999;
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+        
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .heart {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .heart::before, .heart::after {
+                width: 75px;
+                height: 120px;
+            }
+            
+            .heart::before {
+                left: 75px;
+            }
+            
+            .message p {
+                font-size: 1rem;
+            }
+            
+            .login-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- หน้า Login -->
+    <div id="login-page" class="login-container">
+        <div class="login-heart">❤️</div>
+        <h2>=w=</h2>
+        <div class="form-group">
+            <label for="username">ชื่อผู้ใช้</label>
+            <input type="text" id="username" placeholder="กรุณาใส่ชื่อผู้ใช้">
+        </div>
+        <div class="form-group">
+            <label for="password">รหัสผ่าน</label>
+            <input type="password" id="password" placeholder="กรุณาใส่รหัสผ่าน">
+        </div>
+        <button id="login-button" class="login-button">เข้าสู่ระบบ</button>
+        <p id="login-message" class="login-message"></p>
+        <p class="hint">คำใบ้: ชื่อผู้ใช้คือตัวการ์ตูนที่ชอบส่งให้ดู , รหัสผ่านคือวันเกิดของคุณ (ตัวอย่าง: 0101)</p>
+    </div>
+    
+    <!-- หน้าหลัก (ซ่อนไว้เริ่มต้น) -->
+    <div id="main-page" class="container hidden">
+        <h1>สุขสันต์วันครบรอบ 2 ปี 3 เดือนครับแงเวลาผ่านไปไวมากๆ T^T</h1>
+        
+        <div class="heart"></div>
+        
+        <div class="music-player">
+            <h3>คุณรักผมไหมตอบ!!!!!!</h3>
+            <div class="music-controls">
+                <button id="play-button">▶️</button>
+                <button id="pause-button">⏸️</button>
+                <button id="stop-button">⏹️</button>
+            </div>
+            <div class="volume-control">
+                <label for="volume">ระดับเสียง</label>
+                <input type="range" id="volume" min="0" max="1" step="0.1" value="0.5">
+            </div>
+        </div>
+        
+        <div class="message">
+            <p id="love-message">
+                ขอให้เธอพาไปกินของอร่อยอีก<br>
+                ขอให้เธอพาไปแอ่วอีกเยอะๆเลย<br>
+                ไม่ต้องกลัวหรอกจุดอิ่มตัว ตอนนี้น่าจะกินไม่อิ่มแทนละ<br>
+                ขอให้การงานผ่านไปได้ด้วยดีครับ โชคดีมีชัยโชคชัยมีฟาร์ม ;-; <br>
+               
+            </p>
+        </div>
+        
+        <div class="photos">
+            <div class="photo">
+                <img src="./1.jpg" alt="" />
+            </div>
+            <div class="photo">
+                <img src="./2.jpg" alt="" />
+            </div>
+            <div class="photo">
+                <img src="./3.jpg" alt="" />
+            </div>
+            <div class="photo">
+                <img src="./4.jpg" alt="" />
+            </div>
+        </div>
+        
+        <button id="yes-button" class="button">รัก ❤️</button>
+        <button id="no-button" class="button">ไม่รัก</button>
+        
+        <p class="special-message hidden" id="special-message">
+            เราก็รักเธอเหมือนกัน ไหนขอหอมแก้มหน่อยสิ 💑
+            
+        </p>
+        
+        <button id="logout-button" class="button" style="background-color: #999; margin-top: 30px;">ออกจากระบบ</button>
+    </div>
+    
+    <div class="floating-hearts" id="floating-hearts"></div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <script>
+        // ระบบ Login
+        document.getElementById('login-button').addEventListener('click', function() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // คุณสามารถเปลี่ยนค่าชื่อผู้ใช้และรหัสผ่านที่ถูกต้องได้ตรงนี้
+            const correctUsername = "dudububu"; // เปลี่ยนเป็นชื่อแฟนคุณ
+            const correctPassword = "25042546"; // เปลี่ยนเป็นรหัสที่คุณบอกแฟน
+            
+            if (username === correctUsername && password === correctPassword) {
+                // Login สำเร็จ
+                document.getElementById('login-page').classList.add('hidden');
+                document.getElementById('main-page').classList.remove('hidden');
+                createFloatingHearts();
+                
+                // บันทึกสถานะ login ใน localStorage
+                localStorage.setItem('lovePageLoggedIn', 'true');
+            } else {
+                // Login ไม่สำเร็จ
+                document.getElementById('login-message').textContent = "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง";
+            }
+        });
+        
+        // ปุ่มออกจากระบบ
+        document.getElementById('logout-button').addEventListener('click', function() {
+            document.getElementById('main-page').classList.add('hidden');
+            document.getElementById('login-page').classList.remove('hidden');
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('login-message').textContent = '';
+            
+            // ลบสถานะ login จาก localStorage
+            localStorage.removeItem('lovePageLoggedIn');
+            
+            // หยุดเพลงถ้ากำลังเล่นอยู่
+            if (isPlaying) {
+                Tone.Transport.stop();
+                pattern.stop();
+                isPlaying = false;
+            }
+        });
+        
+        // ตรวจสอบสถานะ login จาก localStorage เมื่อโหลดหน้า
+        window.addEventListener('load', function() {
+            if (localStorage.getItem('lovePageLoggedIn') === 'true') {
+                document.getElementById('login-page').classList.add('hidden');
+                document.getElementById('main-page').classList.remove('hidden');
+                createFloatingHearts();
+            }
+        });
+        
+        // ตั้งค่าเพลง
+        let synth;
+        let pattern;
+        let isPlaying = false;
+
+        function initMusic() {
+            // สร้างซินธ์สำหรับเล่นเพลง
+            synth = new Tone.PolySynth().toDestination();
+            
+            // ตั้งค่าระดับเสียง
+            synth.volume.value = -15;
+            
+            // ทำนองเพลงความรัก (โน้ตแบบง่าย)
+            const notes = ["C4", "E4", "G4", "C5", "G4", "E4", 
+                          "A3", "C4", "E4", "A4", "E4", "C4",
+                          "F3", "A3", "C4", "F4", "C4", "A3",
+                          "G3", "B3", "D4", "G4", "D4", "B3"];
+            
+            const durations = ["8n", "8n", "8n", "4n", "8n", "8n",
+                              "8n", "8n", "8n", "4n", "8n", "8n",
+                              "8n", "8n", "8n", "4n", "8n", "8n",
+                              "8n", "8n", "8n", "4n", "8n", "8n"];
+            
+            // สร้างแพทเทิร์นสำหรับเล่นโน้ตแบบลูป
+            pattern = new Tone.Sequence((time, note, index) => {
+                synth.triggerAttackRelease(note, durations[index], time);
+            }, notes, "4n");
+        }
+
+        // ปุ่มเล่นเพลง
+        document.getElementById('play-button').addEventListener('click', async function() {
+            if (!synth) {
+                // เริ่มต้นเสียงเมื่อผู้ใช้กดปุ่มครั้งแรก
+                await Tone.start();
+                initMusic();
+            }
+            
+            if (!isPlaying) {
+                Tone.Transport.start();
+                pattern.start(0);
+                isPlaying = true;
+            }
+        });
+        
+        // ปุ่มหยุดเพลงชั่วคราว
+        document.getElementById('pause-button').addEventListener('click', function() {
+            if (isPlaying) {
+                Tone.Transport.pause();
+                isPlaying = false;
+            }
+        });
+        
+        // ปุ่มหยุดเพลง
+        document.getElementById('stop-button').addEventListener('click', function() {
+            Tone.Transport.stop();
+            pattern.stop();
+            isPlaying = false;
+        });
+        
+        // ปรับระดับเสียง
+        document.getElementById('volume').addEventListener('input', function() {
+            if (synth) {
+                synth.volume.value = Tone.gainToDb(this.value);
+            }
+        });
+
+        // เพิ่มหัวใจลอย
+        function createFloatingHearts() {
+            const container = document.getElementById('floating-hearts');
+            container.innerHTML = ''; // เคลียร์หัวใจเก่า
+            
+            const heartSymbols = ['❤️', '💕', '💖', '💗', '💘', '💓'];
+            
+            for (let i = 0; i < 20; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'floating-heart';
+                heart.textContent = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+                heart.style.left = `${Math.random() * 100}%`;
+                heart.style.animationDuration = `${5 + Math.random() * 10}s`;
+                heart.style.animationDelay = `${Math.random() * 5}s`;
+                container.appendChild(heart);
+            }
+        }
+        
+        // การจัดการปุ่ม
+        document.getElementById('yes-button').addEventListener('click', function() {
+            document.getElementById('special-message').classList.remove('hidden');
+            
+            // เพิ่มหัวใจเมื่อกดปุ่ม Yes
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.className = 'floating-heart';
+                    heart.textContent = '❤️';
+                    heart.style.left = `${Math.random() * 100}%`;
+                    heart.style.bottom = '0';
+                    heart.style.animationDuration = `${3 + Math.random() * 4}s`;
+                    document.getElementById('floating-hearts').appendChild(heart);
+                }, i * 100);
+            }
+        });
+        
+        // ปุ่ม "ไม่รัก" จะหนีเมาส์
+        document.getElementById('no-button').addEventListener('mouseover', function() {
+            const button = this;
+            const container = document.querySelector('.container');
+            
+            button.style.position = 'absolute';
+            button.style.left = `${Math.random() * (container.offsetWidth - button.offsetWidth)}px`;
+            button.style.top = `${Math.random() * (container.offsetHeight - button.offsetHeight)}px`;
+        });
+    </script>
+</body>
+</html>
